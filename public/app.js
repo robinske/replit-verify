@@ -2,15 +2,21 @@ const leaderboardEl = document.getElementById("leaderboard");
 const leaderboardErrorEl = document.getElementById("leaderboard-error");
 
 const verifyPanelEl = document.getElementById("verify-panel");
+const verifyFormsEl = document.getElementById("verify-forms");
 const verifyNameEl = document.getElementById("verify-name");
 const verifyErrorEl = document.getElementById("verify-error");
 const phoneFormEl = document.getElementById("phone-form");
 const phoneInputEl = document.getElementById("phone-input");
 const codeFormEl = document.getElementById("code-form");
 const codeInputEl = document.getElementById("code-input");
+const codeSentMsgEl = document.getElementById("code-sent-msg");
 const verifyCancelEl = document.getElementById("verify-cancel");
+const verifySuccessEl = document.getElementById("verify-success");
+const successNameEl = document.getElementById("success-name");
+const verifySuccessCloseEl = document.getElementById("verify-success-close");
 
 let pendingVoteId = null;
+let pendingVoteName = null;
 
 function escapeHtml(str) {
   const div = document.createElement("div");
@@ -18,7 +24,7 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
-function showError(el, message) {
+function showMessage(el, message) {
   el.textContent = message;
   el.hidden = !message;
 }
@@ -53,21 +59,25 @@ async function loadNames() {
     const res = await fetch("/api/names");
     if (!res.ok) throw new Error("Failed to load leaderboard.");
     const names = await res.json();
-    showError(leaderboardErrorEl, "");
+    showMessage(leaderboardErrorEl, "");
     renderLeaderboard(names);
   } catch (err) {
-    showError(leaderboardErrorEl, "Couldn't load the leaderboard. Try refreshing.");
+    showMessage(leaderboardErrorEl, "Couldn't load the leaderboard. Try refreshing.");
   }
 }
 
 function openVerifyPanel(id, name) {
   pendingVoteId = id;
+  pendingVoteName = name;
   verifyNameEl.textContent = name;
-  showError(verifyErrorEl, "");
+  showMessage(verifyErrorEl, "");
+  showMessage(codeSentMsgEl, "");
   phoneFormEl.reset();
   codeFormEl.reset();
   phoneFormEl.hidden = false;
   codeFormEl.hidden = true;
+  verifyFormsEl.hidden = false;
+  verifySuccessEl.hidden = true;
   verifyPanelEl.hidden = false;
   verifyPanelEl.scrollIntoView({ behavior: "smooth", block: "center" });
 }
@@ -75,6 +85,13 @@ function openVerifyPanel(id, name) {
 function closeVerifyPanel() {
   pendingVoteId = null;
   verifyPanelEl.hidden = true;
+}
+
+function showVoteSuccess(name) {
+  successNameEl.textContent = name;
+  verifyFormsEl.hidden = true;
+  verifySuccessEl.hidden = false;
+  verifyPanelEl.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
 leaderboardEl.addEventListener("click", (e) => {
@@ -87,11 +104,11 @@ verifyCancelEl.addEventListener("click", closeVerifyPanel);
 
 phoneFormEl.addEventListener("submit", async (e) => {
   e.preventDefault();
-  showError(verifyErrorEl, "");
+  showMessage(verifyErrorEl, "");
 
   const phoneNumber = phoneInputEl.value.trim();
   if (!phoneNumber) {
-    showError(verifyErrorEl, "Please enter a phone number.");
+    showMessage(verifyErrorEl, "Please enter a phone number.");
     return;
   }
 
@@ -104,26 +121,28 @@ phoneFormEl.addEventListener("submit", async (e) => {
     const data = await res.json();
 
     if (!res.ok) {
-      showError(verifyErrorEl, data.error || "Something went wrong.");
+      showMessage(verifyErrorEl, data.error || "Something went wrong.");
       return;
     }
 
     phoneFormEl.hidden = true;
     codeFormEl.hidden = false;
+    showMessage(codeSentMsgEl, `Code sent to ${phoneNumber} 📲`);
+    codeInputEl.focus();
   } catch (err) {
-    showError(verifyErrorEl, "Couldn't send a verification code. Try again.");
+    showMessage(verifyErrorEl, "Couldn't send a verification code. Try again.");
   }
 });
 
 codeFormEl.addEventListener("submit", async (e) => {
   e.preventDefault();
-  showError(verifyErrorEl, "");
+  showMessage(verifyErrorEl, "");
 
   const phoneNumber = phoneInputEl.value.trim();
   const code = codeInputEl.value.trim();
 
   if (!code) {
-    showError(verifyErrorEl, "Please enter the verification code.");
+    showMessage(verifyErrorEl, "Please enter the verification code.");
     return;
   }
 
@@ -136,15 +155,17 @@ codeFormEl.addEventListener("submit", async (e) => {
     const data = await res.json();
 
     if (!res.ok) {
-      showError(verifyErrorEl, data.error || "Something went wrong.");
+      showMessage(verifyErrorEl, data.error || "Something went wrong.");
       return;
     }
 
-    closeVerifyPanel();
+    showVoteSuccess(pendingVoteName);
     await loadNames();
   } catch (err) {
-    showError(verifyErrorEl, "Couldn't confirm that vote. Try again.");
+    showMessage(verifyErrorEl, "Couldn't confirm that vote. Try again.");
   }
 });
+
+verifySuccessCloseEl.addEventListener("click", closeVerifyPanel);
 
 loadNames();

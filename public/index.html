@@ -23,36 +23,45 @@
     </section>
 
     <section id="verify-panel" class="card" hidden>
-      <h2>📱 Verify Your Phone to Vote</h2>
-      <p>Voting for <strong id="verify-name"></strong>. We'll text you a one-time code to confirm your vote.</p>
+      <div id="verify-forms">
+        <h2>📱 Verify Your Phone to Vote</h2>
+        <p>Voting for <strong id="verify-name"></strong>. We'll text you a one-time code to confirm your vote.</p>
 
-      <form id="phone-form">
-        <label for="phone-input">Phone number</label>
-        <input
-          id="phone-input"
-          name="phoneNumber"
-          type="tel"
-          placeholder="+15555550123"
-          required
-        />
-        <button type="submit">Send Code</button>
-      </form>
+        <form id="phone-form">
+          <label for="phone-input">Phone number</label>
+          <input
+            id="phone-input"
+            name="phoneNumber"
+            type="tel"
+            placeholder="+15555550123"
+            required
+          />
+          <button type="submit">Send Code</button>
+        </form>
 
-      <form id="code-form" hidden>
-        <label for="code-input">Verification code</label>
-        <input
-          id="code-input"
-          name="code"
-          type="text"
-          inputmode="numeric"
-          placeholder="123456"
-          required
-        />
-        <button type="submit">Confirm Vote</button>
-      </form>
+        <form id="code-form" hidden>
+          <p id="code-sent-msg" class="success-msg" hidden></p>
+          <label for="code-input">Verification code</label>
+          <input
+            id="code-input"
+            name="code"
+            type="text"
+            inputmode="numeric"
+            placeholder="123456"
+            required
+          />
+          <button type="submit">Confirm Vote</button>
+        </form>
 
-      <p id="verify-error" class="error-msg" hidden></p>
-      <button id="verify-cancel" class="link-btn" type="button">Cancel</button>
+        <p id="verify-error" class="error-msg" hidden></p>
+        <button id="verify-cancel" class="link-btn" type="button">Cancel</button>
+      </div>
+
+      <div id="verify-success" hidden>
+        <p class="success-check">✅</p>
+        <p>Your vote for <strong id="success-name"></strong> is confirmed. Thanks for voting!</p>
+        <button id="verify-success-close" class="link-btn" type="button">Close</button>
+      </div>
     </section>
 
     <footer class="board-footer">
