@@ -1,7 +1,7 @@
 # Help Me Name My New Puppy 🐾
 
-A tiny, playful naming-contest web app. Submit a name suggestion, vote for
-your favorites, and watch the leaderboard update in real time.
+A tiny, playful naming-contest web app. Vote for your favorite name and
+watch the leaderboard update in real time.
 
 This is the **starting point** ("before") for a Twilio Verify tutorial that
 adds phone number verification to prevent duplicate voting. For the
@@ -24,4 +24,4 @@ Then open http://localhost:3000.
 
 - Express server with in-memory storage (`server.js`)
 - Static HTML/CSS/JS frontend (`public/`)
-- No database, no user accounts — just name suggestions and vote counts
+- No database, no user accounts — just names and vote counts

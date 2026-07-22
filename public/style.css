@@ -139,52 +139,6 @@ body {
   transform: scale(0.96);
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-label {
-  font-size: 0.9rem;
-  font-weight: bold;
-  margin-top: 8px;
-}
-
-input,
-textarea {
-  font-family: inherit;
-  font-size: 1rem;
-  padding: 8px 10px;
-  border-radius: 8px;
-  border: 2px solid rgba(0, 0, 0, 0.15);
-  background: #fff;
-  resize: vertical;
-}
-
-input:focus,
-textarea:focus {
-  outline: none;
-  border-color: var(--accent);
-}
-
-button[type="submit"] {
-  margin-top: 14px;
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  padding: 12px;
-  font-size: 1.05rem;
-  font-weight: bold;
-  cursor: pointer;
-  font-family: inherit;
-}
-
-button[type="submit"]:hover {
-  background: var(--accent-dark);
-}
-
 .error-msg {
   color: var(--pin);
   font-size: 0.85rem;

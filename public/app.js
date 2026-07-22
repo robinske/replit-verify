@@ -1,8 +1,5 @@
 const leaderboardEl = document.getElementById("leaderboard");
 const leaderboardErrorEl = document.getElementById("leaderboard-error");
-const formEl = document.getElementById("submit-form");
-const formErrorEl = document.getElementById("form-error");
-const nameInput = document.getElementById("name-input");
 
 function escapeHtml(str) {
   const div = document.createElement("div");
@@ -64,37 +61,6 @@ leaderboardEl.addEventListener("click", async (e) => {
   } catch (err) {
     showError(leaderboardErrorEl, "Couldn't register that vote. Try again.");
     btn.disabled = false;
-  }
-});
-
-formEl.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  showError(formErrorEl, "");
-
-  const name = nameInput.value.trim();
-
-  if (!name) {
-    showError(formErrorEl, "Please enter a name.");
-    return;
-  }
-
-  try {
-    const res = await fetch("/api/names", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name }),
-    });
-    const data = await res.json();
-
-    if (!res.ok) {
-      showError(formErrorEl, data.error || "Something went wrong.");
-      return;
-    }
-
-    formEl.reset();
-    await loadNames();
-  } catch (err) {
-    showError(formErrorEl, "Couldn't submit that name. Try again.");
   }
 });
 
