@@ -30,7 +30,8 @@ wrap the Twilio Verify API.
 
    ```
    TWILIO_ACCOUNT_SID=       # found on your Twilio Console dashboard
-   TWILIO_AUTH_TOKEN=        # found on your Twilio Console dashboard
+   TWILIO_API_KEY=           # create one at console.twilio.com/us1/account/keys-credentials/api-keys, starts with "SK"
+   TWILIO_API_SECRET=        # shown once when you create the API key — copy it then
    TWILIO_VERIFY_SERVICE_SID=  # found on your Verify Service page, starts with "VA"
    ```
 
